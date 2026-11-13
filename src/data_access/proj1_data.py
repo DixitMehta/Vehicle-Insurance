@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 from typing import Optional
 
-from src.configuration.mongo_db_connection import MongoDBCLient
-from src.constants import DATABASE_NAME
+from src.configuration.mongo_db_connection import MongoDBClient
+from src.constants import DATABASE_NAME, COLLECTION_NAME
 from src.exception import MyException
 
 class Proj1Data:
@@ -17,11 +17,11 @@ class Proj1Data:
         Initializes the MongoDB client connection.
         """
         try:
-            self.mongo_client = MongoDBCLient(database_name=DATABASE_NAME)
+            self.mongo_client = MongoDBClient(database_name=DATABASE_NAME)
         except Exception as e:
             raise MyException(e, sys)
 
-    def export_collection_as_dataframe(self, collection_name: str, database_name: Optional[str] = None) -> pd.DataFrame:
+    def export_collection_as_dataframe(self, collection_name: str , database_name: Optional[str] = None) -> pd.DataFrame:
         """
         Exports as entire MongoDB collection as a Pandas Dataframe.
 
@@ -40,12 +40,15 @@ class Proj1Data:
         try:
             # Access specified collection from the default or specified database.
             if database_name is None:
+                database_name = DATABASE_NAME
+                collection_name = COLLECTION_NAME
                 collection = self.mongo_client.database[collection_name]
             else:
                 collection = self.mongo_client[database_name][collection_name]
 
             #  Convert collection data to DataFrane and preprocess
             print("Fetching data from mongoDB")
+            print(f"Database name: {database_name}")
             df = pd.DataFrame(list(collection.find()))
             print(f"Data fetched with len: {len(df)}")
             if "id" in df.columns.to_list():

@@ -10,7 +10,7 @@ from src.constants import DATABASE_NAME, MONGODB_URL_KEY
 # Load the certificate authority file to avoid timeout error when connecting to mongoDB
 ca = certifi.where()
 
-class MongoDBCLient:
+class MongoDBClient:
     """
     MongoDBClient is responsible for establishing a connection to the mongoDB database.
 
@@ -46,15 +46,15 @@ class MongoDBCLient:
 
         try:
             #  Check if a MongoDB client connection has already been established; if not, create a new one.
-            if MongoDBCLient.client is None:
+            if MongoDBClient.client is None:
                 mongo_db_url = os.getenv(MONGODB_URL_KEY) # Retrieve MongnDB url from enviromenet variables.
                 if mongo_db_url is None:
                     raise Exception (f"Environment variable '{MONGODB_URL_KEY} is not set.")
 
-                MongoDBCLient.client = pymongo.MongoClient(mongo_db_url, tlsCAFile=ca)
-
-            self.client - MongoDBCLient.client
-            self.database - self.client[database_name] # connect to the specified database.
+                MongoDBClient.client = pymongo.MongoClient(mongo_db_url, tlsCAFile=ca)
+                
+            self.client = MongoDBClient.client
+            self.database = self.client[database_name] # connect to the specified database.
             self.database_name  = database_name
             logging.info('MongoDB connection successful.')
 

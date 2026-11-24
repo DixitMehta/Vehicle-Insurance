@@ -6,6 +6,7 @@
    conda env list to verify
    conda create -n vehicle python=3.10 -y, before installing it will give links to accept certain things, run the command to accept those.
    conda activate vehicle
+   To tell your project use different env: ctrl + shift + p --> python environment --> choose yours
    conda deactivate (to deactivate the conda enviroment)
    add required modules to requirements.txt
    Do "pip install -r requirements.txt"
